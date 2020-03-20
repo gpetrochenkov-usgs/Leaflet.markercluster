@@ -1,21 +1,19 @@
 /*
- * Leaflet.markercluster 1.4.1+master.93bf540,
+ * markercluster 1.4.1,
  * Provides Beautiful Animated Marker Clustering functionality for Leaflet, a JS library for interactive maps.
- * https://github.com/Leaflet/Leaflet.markercluster
- * (c) 2012-2017, Dave Leaver, smartrak
+ * https://github.com/gpetrochenkov-usgs/Leaflet.markercluster
+ * (c) 2020, Greg Petrochenkov, USGS
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(global = global || self, factory((global.Leaflet = global.Leaflet || {}, global.Leaflet.markercluster = {})));
-}(this, function (exports) { 'use strict';
+	(global = global || self, factory(global.markercluster = {}));
+}(this, (function (exports) { 'use strict';
 
 	/* @preserve
 	 * Leaflet 1.4.0, a JS library for interactive maps. http://leafletjs.com
 	 * (c) 2010-2018 Vladimir Agafonkin, (c) 2010-2011 CloudMade
 	 */
-
-	var version = "1.4.0";
 
 	/*
 	 * @namespace Util
@@ -4701,20 +4699,6 @@
 		}
 	});
 
-	// @section
-
-	// @factory L.map(id: String, options?: Map options)
-	// Instantiates a map object given the DOM ID of a `<div>` element
-	// and optionally an object literal with `Map options`.
-	//
-	// @alternative
-	// @factory L.map(el: HTMLElement, options?: Map options)
-	// Instantiates a map object given an instance of a `<div>` HTML element
-	// and optionally an object literal with `Map options`.
-	function createMap(id, options) {
-		return new Map(id, options);
-	}
-
 	/*
 	 * @class Control
 	 * @aka L.Control
@@ -4818,10 +4802,6 @@
 			}
 		}
 	});
-
-	var control = function (options) {
-		return new Control(options);
-	};
 
 	/* @section Extension methods
 	 * @uninheritable
@@ -5299,13 +5279,6 @@
 
 	});
 
-
-	// @factory L.control.layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
-	// Creates an attribution control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
-	var layers = function (baseLayers, overlays, options) {
-		return new Layers(baseLayers, overlays, options);
-	};
-
 	/*
 	 * @class Control.Zoom
 	 * @aka L.Control.Zoom
@@ -5436,13 +5409,6 @@
 		}
 	});
 
-	// @namespace Control.Zoom
-	// @factory L.control.zoom(options: Control.Zoom options)
-	// Creates a zoom control
-	var zoom = function (options) {
-		return new Zoom(options);
-	};
-
 	/*
 	 * @class Control.Scale
 	 * @aka L.Control.Scale
@@ -5565,13 +5531,6 @@
 		}
 	});
 
-
-	// @factory L.control.scale(options?: Control.Scale options)
-	// Creates an scale control with the given options.
-	var scale = function (options) {
-		return new Scale(options);
-	};
-
 	/*
 	 * @class Control.Attribution
 	 * @aka L.Control.Attribution
@@ -5688,22 +5647,10 @@
 		}
 	});
 
-	// @namespace Control.Attribution
-	// @factory L.control.attribution(options: Control.Attribution options)
-	// Creates an attribution control.
-	var attribution = function (options) {
-		return new Attribution(options);
-	};
-
 	Control.Layers = Layers;
 	Control.Zoom = Zoom;
 	Control.Scale = Scale;
 	Control.Attribution = Attribution;
-
-	control.layers = layers;
-	control.zoom = zoom;
-	control.scale = scale;
-	control.attribution = attribution;
 
 	/*
 		L.Handler is a base class for handler classes that are used internally to inject
@@ -5760,8 +5707,6 @@
 		map.addHandler(name, this);
 		return this;
 	};
-
-	var Mixin = {Events: Events};
 
 	/*
 	 * @class Draggable
@@ -6905,13 +6850,6 @@
 		}
 	});
 
-
-	// @factory L.layerGroup(layers?: Layer[], options?: Object)
-	// Create a layer group, optionally given an initial set of layers and an `options` object.
-	var layerGroup = function (layers, options) {
-		return new LayerGroup(layers, options);
-	};
-
 	/*
 	 * @class FeatureGroup
 	 * @aka L.FeatureGroup
@@ -7147,13 +7085,6 @@
 			return retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
 		}
 	});
-
-
-	// @factory L.icon(options: Icon options)
-	// Creates an icon instance with the given options.
-	function icon(options) {
-		return new Icon(options);
-	}
 
 	/*
 	 * @miniclass Icon.Default (Icon)
@@ -7719,15 +7650,6 @@
 		}
 	});
 
-
-	// factory L.marker(latlng: LatLng, options? : Marker options)
-
-	// @factory L.marker(latlng: LatLng, options? : Marker options)
-	// Instantiates a Marker object given a geographical point and optionally an options object.
-	function marker(latlng, options) {
-		return new Marker(latlng, options);
-	}
-
 	/*
 	 * @class Path
 	 * @aka L.Path
@@ -7963,13 +7885,6 @@
 		}
 	});
 
-
-	// @factory L.circleMarker(latlng: LatLng, options?: CircleMarker options)
-	// Instantiates a circle marker object given a geographical point, and an optional options object.
-	function circleMarker(latlng, options) {
-		return new CircleMarker(latlng, options);
-	}
-
 	/*
 	 * @class Circle
 	 * @aka L.Circle
@@ -8064,17 +7979,6 @@
 			this._updateBounds();
 		}
 	});
-
-	// @factory L.circle(latlng: LatLng, options?: Circle options)
-	// Instantiates a circle object given a geographical point, and an options object
-	// which contains the circle radius.
-	// @alternative
-	// @factory L.circle(latlng: LatLng, radius: Number, options?: Circle options)
-	// Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
-	// Do not use in new applications or plugins.
-	function circle(latlng, options, legacyOptions) {
-		return new Circle(latlng, options, legacyOptions);
-	}
 
 	/*
 	 * @class Polyline
@@ -8385,15 +8289,6 @@
 		}
 	});
 
-	// @factory L.polyline(latlngs: LatLng[], options?: Polyline options)
-	// Instantiates a polyline object given an array of geographical points and
-	// optionally an options object. You can create a `Polyline` object with
-	// multiple separate lines (`MultiPolyline`) by passing an array of arrays
-	// of geographic points.
-	function polyline(latlngs, options) {
-		return new Polyline(latlngs, options);
-	}
-
 	// Retrocompat. Allow plugins to support Leaflet versions before and after 1.1.
 	Polyline._flat = _flat;
 
@@ -8568,12 +8463,6 @@
 		}
 
 	});
-
-
-	// @factory L.polygon(latlngs: LatLng[], options?: Polyline options)
-	function polygon(latlngs, options) {
-		return new Polygon(latlngs, options);
-	}
 
 	/*
 	 * @class GeoJSON
@@ -8971,18 +8860,6 @@
 		}
 	});
 
-	// @namespace GeoJSON
-	// @factory L.geoJSON(geojson?: Object, options?: GeoJSON options)
-	// Creates a GeoJSON layer. Optionally accepts an object in
-	// [GeoJSON format](https://tools.ietf.org/html/rfc7946) to display on the map
-	// (you can alternatively add it later with `addData` method) and an `options` object.
-	function geoJSON(geojson, options) {
-		return new GeoJSON(geojson, options);
-	}
-
-	// Backward compatibility.
-	var geoJson = geoJSON;
-
 	/*
 	 * @class ImageOverlay
 	 * @aka L.ImageOverlay
@@ -9235,13 +9112,6 @@
 		}
 	});
 
-	// @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
-	// Instantiates an image overlay object given the URL of the image and the
-	// geographical bounds it is tied to.
-	var imageOverlay = function (url, bounds, options) {
-		return new ImageOverlay(url, bounds, options);
-	};
-
 	/*
 	 * @class VideoOverlay
 	 * @aka L.VideoOverlay
@@ -9315,15 +9185,6 @@
 		// Returns the instance of [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLVideoElement)
 		// used by this overlay.
 	});
-
-
-	// @factory L.videoOverlay(video: String|Array|HTMLVideoElement, bounds: LatLngBounds, options?: VideoOverlay options)
-	// Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
-	// geographical bounds it is tied to.
-
-	function videoOverlay(video, bounds, options) {
-		return new VideoOverlay(video, bounds, options);
-	}
 
 	/*
 	 * @class DivOverlay
@@ -9805,13 +9666,6 @@
 
 	});
 
-	// @namespace Popup
-	// @factory L.popup(options?: Popup options, source?: Layer)
-	// Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
-	var popup = function (options, source) {
-		return new Popup(options, source);
-	};
-
 
 	/* @namespace Map
 	 * @section Interaction Options
@@ -10228,13 +10082,6 @@
 
 	});
 
-	// @namespace Tooltip
-	// @factory L.tooltip(options?: Tooltip options, source?: Layer)
-	// Instantiates a Tooltip object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the tooltip with a reference to the Layer to which it refers.
-	var tooltip = function (options, source) {
-		return new Tooltip(options, source);
-	};
-
 	// @namespace Map
 	// @section Methods for Layers and Controls
 	Map.include({
@@ -10514,12 +10361,6 @@
 			return null;
 		}
 	});
-
-	// @factory L.divIcon(options: DivIcon options)
-	// Creates a `DivIcon` instance with the given options.
-	function divIcon(options) {
-		return new DivIcon(options);
-	}
 
 	Icon.Default = IconDefault;
 
@@ -11432,12 +11273,6 @@
 		}
 	});
 
-	// @factory L.gridLayer(options?: GridLayer options)
-	// Creates a new instance of GridLayer with the supplied options.
-	function gridLayer(options) {
-		return new GridLayer(options);
-	}
-
 	/*
 	 * @class TileLayer
 	 * @inherits GridLayer
@@ -11699,14 +11534,6 @@
 		}
 	});
 
-
-	// @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
-	// Instantiates a tile layer object given a `URL template` and optionally an options object.
-
-	function tileLayer(url, options) {
-		return new TileLayer(url, options);
-	}
-
 	/*
 	 * @class TileLayer.WMS
 	 * @inherits TileLayer
@@ -11832,15 +11659,7 @@
 		}
 	});
 
-
-	// @factory L.tileLayer.wms(baseUrl: String, options: TileLayer.WMS options)
-	// Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
-	function tileLayerWMS(url, options) {
-		return new TileLayerWMS(url, options);
-	}
-
 	TileLayer.WMS = TileLayerWMS;
-	tileLayer.wms = tileLayerWMS;
 
 	/*
 	 * @class Renderer
@@ -12883,12 +12702,6 @@
 		}
 	});
 
-
-	// @factory L.rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
-	function rectangle(latLngBounds, options) {
-		return new Rectangle(latLngBounds, options);
-	}
-
 	SVG.create = create$2;
 	SVG.pointsToPath = pointsToPath;
 
@@ -13845,85 +13658,6 @@
 	Map.TouchZoom = TouchZoom;
 
 	Object.freeze = freeze;
-
-	var L$1 = /*#__PURE__*/Object.freeze({
-		version: version,
-		Control: Control,
-		control: control,
-		Browser: Browser,
-		Evented: Evented,
-		Mixin: Mixin,
-		Util: Util,
-		Class: Class,
-		Handler: Handler,
-		extend: extend,
-		bind: bind,
-		stamp: stamp,
-		setOptions: setOptions,
-		DomEvent: DomEvent,
-		DomUtil: DomUtil,
-		PosAnimation: PosAnimation,
-		Draggable: Draggable,
-		LineUtil: LineUtil,
-		PolyUtil: PolyUtil,
-		Point: Point,
-		point: toPoint,
-		Bounds: Bounds,
-		bounds: toBounds,
-		Transformation: Transformation,
-		transformation: toTransformation,
-		Projection: index,
-		LatLng: LatLng,
-		latLng: toLatLng,
-		LatLngBounds: LatLngBounds,
-		latLngBounds: toLatLngBounds,
-		CRS: CRS,
-		GeoJSON: GeoJSON,
-		geoJSON: geoJSON,
-		geoJson: geoJson,
-		Layer: Layer,
-		LayerGroup: LayerGroup,
-		layerGroup: layerGroup,
-		FeatureGroup: FeatureGroup,
-		featureGroup: featureGroup,
-		ImageOverlay: ImageOverlay,
-		imageOverlay: imageOverlay,
-		VideoOverlay: VideoOverlay,
-		videoOverlay: videoOverlay,
-		DivOverlay: DivOverlay,
-		Popup: Popup,
-		popup: popup,
-		Tooltip: Tooltip,
-		tooltip: tooltip,
-		Icon: Icon,
-		icon: icon,
-		DivIcon: DivIcon,
-		divIcon: divIcon,
-		Marker: Marker,
-		marker: marker,
-		TileLayer: TileLayer,
-		tileLayer: tileLayer,
-		GridLayer: GridLayer,
-		gridLayer: gridLayer,
-		SVG: SVG,
-		svg: svg$1,
-		Renderer: Renderer,
-		Canvas: Canvas,
-		canvas: canvas$1,
-		Path: Path,
-		CircleMarker: CircleMarker,
-		circleMarker: circleMarker,
-		Circle: Circle,
-		circle: circle,
-		Polyline: Polyline,
-		polyline: polyline,
-		Polygon: Polygon,
-		polygon: polygon,
-		Rectangle: Rectangle,
-		rectangle: rectangle,
-		Map: Map,
-		map: createMap
-	});
 
 	/*
 	* Extends L.Marker to include two extra methods: clusterHide and clusterShow.
@@ -16617,17 +16351,18 @@
 		}
 	});
 
-	// import {} from './MarkerOpacity.js';
-	// import {} from './DistanceGrid.js';
-	// import {} from './MarkerCluster.QuickHull.js';
-	// import {} from './MarkerCluster.Spiderfier.js';
-	// import {} from './MarkerClusterGroup.Refresh.js';
+
+
+	var markerClusterGroup = function (options) {
+		return new MarkerClusterGroup(options);
+	};
 
 	exports.MarkerCluster = MarkerCluster;
 	exports.MarkerClusterGroup = MarkerClusterGroup;
 	exports.MarkerClusterNonAnimated = MarkerClusterNonAnimated;
+	exports.markerClusterGroup = markerClusterGroup;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
-//# sourceMappingURL=leaflet.markercluster-src.js.map
+})));
+//# sourceMappingURL=markercluster-src.js.map
