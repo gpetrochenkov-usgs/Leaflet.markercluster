@@ -1,5 +1,5 @@
 {
-	"name": "markercluster",
+	"name": "markercluster-iow",
 	"repository": "https://github.com/gpetrochenkov-usgs/Leaflet.markercluster",
 	"version": "1.4.1",
 	"description": "Provides Beautiful Animated Marker Clustering functionality for Leaflet",
