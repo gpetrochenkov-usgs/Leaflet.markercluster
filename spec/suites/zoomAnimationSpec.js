@@ -1,4 +1,7 @@
-﻿describe('zoomAnimation', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup.js';
+
+describe('zoomAnimation', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -23,7 +26,7 @@
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -36,12 +39,7 @@
 	});
 
 	function setBrowserToMobile() {
-		var fakeBrowser = {};
-		for (k in realBrowser) {
-			fakeBrowser[k] = realBrowser[k];
-		}
-		fakeBrowser.mobile = true;
-		L.Browser = fakeBrowser;
+		L.Browser.mobile = true;
 	}
 
 	/////////////////////////////
@@ -50,7 +48,7 @@
 	it('adds the visible marker to the map when zooming in', function () {
 		map.setView(new L.LatLng(-37.36142550190516, 174.254150390625), 7);
 
-		group = new L.MarkerClusterGroup({
+		group = new MarkerClusterGroup({
 			showCoverageOnHover: true,
 			maxClusterRadius: 20,
 			disableClusteringAtZoom: 15
@@ -72,7 +70,7 @@
 
 	it('adds the visible marker to the map when jumping around', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 		var marker1 = new L.Marker([48.858280181884766, 2.2945759296417236]);
 		var marker2 = new L.Marker([16.02359962463379, -61.70280075073242]);
 		group.addLayer(marker1); //The one we zoom in on first
@@ -96,7 +94,7 @@
 
 	it('adds the visible markers to the map, but not parent clusters when jumping around', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker1 = new L.Marker([59.9520, 30.3307]),
 			marker2 = new L.Marker([59.9516, 30.3308]),
@@ -135,7 +133,7 @@
 				[2, 2]
 			]));
 
-			group = new L.MarkerClusterGroup({
+			group = new MarkerClusterGroup({
 				maxClusterRadius: 80
 			}).addTo(map);
 
@@ -179,14 +177,14 @@
 			expect(map._panes.markerPane.childNodes.length).to.be(2); // The bottomMarker + cluster for the 10 above markers.
 		}
 		finally {
-			L.Browser = realBrowser;
+			L.Browser.mobile = false;
 		}
 	});
 
 	describe('zoomToShowLayer', function () {
 
 		it('zoom to single marker inside map view', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var marker = new L.Marker([59.9520, 30.3307]);
 
@@ -217,7 +215,7 @@
 		});
 
 		it('pan map to single marker outside map view', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var marker = new L.Marker([59.9520, 30.3307]);
 
@@ -249,7 +247,7 @@
 		});
 
 		it('change view and zoom to marker in cluster inside map view', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var marker1 = new L.Marker([59.9520, 30.3307]);
 			var marker2 = new L.Marker([59.9516, 30.3308]);
@@ -281,7 +279,7 @@
 		});
 
 		it('change view and zoom to marker in cluster outside map view', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var marker1 = new L.Marker([59.9520, 30.3307]);
 			var marker2 = new L.Marker([59.9516, 30.3308]);
@@ -314,7 +312,7 @@
 		});
 
 		it('spiderfy overlapping markers', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var marker1 = new L.Marker([59.9520, 30.3307]);
 			var marker2 = new L.Marker([59.9520, 30.3307]);
@@ -346,7 +344,7 @@
 		});
 
 		it('zoom or spiderfy markers if they visible on next level of zoom', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var marker1 = new L.Marker([59.9520, 30.3307]);
 			var marker2 = new L.Marker([59.9516, 30.3308]);
@@ -380,7 +378,7 @@
 		});
 
 		it('zoom and executes callback even for non-icon-based Marker', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var marker1 = new L.CircleMarker([59.9520, 30.3307]);
 			var marker2 = new L.CircleMarker([59.9516, 30.3308]);

@@ -1,6 +1,8 @@
-﻿describe('distance grid', function () {
+﻿import {DistanceGrid} from '../../src/DistanceGrid';
+
+describe('distance grid', function () {
 	it('addObject', function () {
-		var grid = new L.DistanceGrid(100),
+		var grid = new DistanceGrid(100),
 		    obj = {};
 
 		expect(grid.addObject(obj, { x: 0, y: 0 })).to.eql(undefined);
@@ -8,7 +10,7 @@
 	});
 
 	it('eachObject', function (done) {
-		var grid = new L.DistanceGrid(100),
+		var grid = new DistanceGrid(100),
 		    obj = {};
 
 		expect(grid.addObject(obj, { x: 0, y: 0 })).to.eql(undefined);
@@ -20,7 +22,7 @@
 	});
 
 	it('getNearObject', function () {
-		var grid = new L.DistanceGrid(100),
+		var grid = new DistanceGrid(100),
 			obj = {};
 
 		grid.addObject(obj, { x: 0, y: 0 });
@@ -30,7 +32,7 @@
 	});
 
 	it('getNearObject with cellSize 0', function () {
-		var grid = new L.DistanceGrid(0),
+		var grid = new DistanceGrid(0),
 			obj = {};
 
 		grid.addObject(obj, { x: 0, y: 0 });

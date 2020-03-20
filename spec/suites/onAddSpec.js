@@ -1,4 +1,8 @@
-﻿describe('onAdd', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+
+describe('onAdd', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -30,7 +34,7 @@
 	/////////////////////////////
 	it('throws an error if maxZoom is not specified', function () {
 
-		var group = new L.MarkerClusterGroup();
+		var group = new MarkerClusterGroup();
 		var marker = new L.Marker([1.5, 1.5]);
 
 		group.addLayer(marker);
@@ -47,7 +51,7 @@
 
 	it('successfully handles removing and re-adding a layer while not on the map', function () {
 		map.options.maxZoom = 18;
-		var group = new L.MarkerClusterGroup();
+		var group = new MarkerClusterGroup();
 		var marker = new L.Marker([1.5, 1.5]);
 
 		map.addLayer(group);

@@ -24,8 +24,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Retrieved from: http://en.literateprograms.org/Quickhull_(Javascript)?oldid=18434
 */
 
-(function () {
-	L.QuickHull = {
+export var QuickHull = {
 
 		/*
 		 * @param {Object} cpt a point to be measured from the baseline
@@ -146,10 +145,10 @@ Retrieved from: http://en.literateprograms.org/Quickhull_(Javascript)?oldid=1843
 								this.buildConvexHull([maxPt, minPt], latLngs));
 			return ch;
 		}
-	};
-}());
+};
 
-L.MarkerCluster.include({
+
+export var hullMarkerClusterInclude = {
 	getConvexHull: function () {
 		var childMarkers = this.getAllChildMarkers(),
 			points = [],
@@ -160,6 +159,6 @@ L.MarkerCluster.include({
 			points.push(p);
 		}
 
-		return L.QuickHull.getConvexHull(points);
+		return QuickHull.getConvexHull(points);
 	}
-});
+};

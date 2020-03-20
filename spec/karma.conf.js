@@ -1,4 +1,8 @@
 var json = require('rollup-plugin-json');
+var istanbul = require('rollup-plugin-istanbul');
+var alias = require('@rollup/plugin-alias');
+var commonjs = require('rollup-plugin-commonjs');
+var path = require('path');
 
 // Karma configuration
 module.exports = function (config) {
@@ -9,12 +13,12 @@ module.exports = function (config) {
 		"spec/sinon.js",
 		"spec/expect.js",
 
-		"node_modules/leaflet/dist/leaflet-src.js",
-		"src/index.js",
 
-		"spec/after.js",
+		"src/*.js",
+
+
 		"node_modules/happen/happen.js",
-		"spec/suites/SpecHelper.js",
+		// "spec/suites/SpecHelper.js",
 		"spec/suites/**/*.js",
 		"dist/*.css"
 	];
@@ -30,11 +34,19 @@ module.exports = function (config) {
 			'karma-phantomjs-launcher',
 			'karma-chrome-launcher',
 			'karma-safari-launcher',
-			'karma-firefox-launcher'
+			'karma-firefox-launcher',
+			'karma-jasmine',
+			'karma-jasmine-ajax',
 		],
 
 		// frameworks to use
 		frameworks: ['mocha'],
+
+        client: {
+          jasmine: {
+            random: false
+          }
+        },
 
 		// list of files / patterns to load in the browser
 		files: files,
@@ -45,11 +57,26 @@ module.exports = function (config) {
 
 		// Rollup the ES6 Leaflet.markercluster sources into just one file, before tests
 		preprocessors: {
-			'src/index.js': ['rollup']
+			'node_modules/leaflet/dist/leaflet-src.esm.js': ['rollup'],
+			'src/*': ['rollup'],
+            'spec/suites/*': ['rollup'],
+			'spec/after.js': ['rollup']
 		},
 		rollupPreprocessor: {
+			// ...require('../rollup.config'),
 			plugins: [
-				json()
+				json(),
+				istanbul({exclude: [
+                            'spec/suites/*',
+                            'node_modules/**/*',
+						    'node_modules/leaflet/dist/leaflet-src.esm.js'
+                        ]}),
+				alias({
+					entries: [
+						{find: 'leaflet', replacement: path.resolve(__dirname, '../node_modules/leaflet/dist/leaflet-src.esm.js')}
+					]
+        		}),
+				commonjs()
 			],
 			output: {
 				format: 'umd',

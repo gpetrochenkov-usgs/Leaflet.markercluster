@@ -1,3 +1,6 @@
+import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
 describe('Remember opacity', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
@@ -51,7 +54,7 @@ describe('Remember opacity', function () {
 	it('clusters semitransparent markers into an opaque one', function () {
 		map.setView(new L.LatLng(0,0), 1);
 
-		group = new L.MarkerClusterGroup({
+		group = new MarkerClusterGroup({
 			maxClusterRadius: 20
 		});
 		group.addLayers(markers);
@@ -67,7 +70,7 @@ describe('Remember opacity', function () {
 		map.setView(new L.LatLng(0,0), 1);
 		var visibleClusters;
 
-		group = new L.MarkerClusterGroup({
+		group = new MarkerClusterGroup({
 			maxClusterRadius: 20
 		});
 		group.addLayers(markers);
@@ -100,7 +103,7 @@ describe('Remember opacity', function () {
 	it('has no problems zooming in and out several times', function () {
 		var visibleClusters;
 
-		group = new L.MarkerClusterGroup({
+		group = new MarkerClusterGroup({
 			maxClusterRadius: 20
 		});
 		group.addLayers(markers);
@@ -131,7 +134,7 @@ describe('Remember opacity', function () {
 		map.setView(new L.LatLng(0,0), 1);
 
 		var visibleClusters;
-		group = new L.MarkerClusterGroup({
+		group = new MarkerClusterGroup({
 			maxClusterRadius: 20
 		});
 		group.addLayers(markers);

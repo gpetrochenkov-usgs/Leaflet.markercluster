@@ -1,7 +1,10 @@
 //This code is 100% based on https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
 //Huge thanks to jawj for implementing it first to make my job easy :-)
 
-L.MarkerCluster.include({
+import * as L from 'leaflet';
+import {MarkerClusterGroup} from './MarkerClusterGroup.js';
+
+export var spiderfyMarkerClusterInclude = {
 
 	_2PI: Math.PI * 2,
 	_circleFootSeparation: 25, //related to circumference of circle
@@ -131,55 +134,11 @@ L.MarkerCluster.include({
 		group._ignoreMove = false;
 		group._spiderfied = null;
 	}
-});
+};
 
-//Non Animated versions of everything
-L.MarkerClusterNonAnimated = L.MarkerCluster.extend({
-	_animationSpiderfy: function (childMarkers, positions) {
-		var group = this._group,
-			map = group._map,
-			fg = group._featureGroup,
-			legOptions = this._group.options.spiderLegPolylineOptions,
-			i, m, leg, newPos;
-
-		group._ignoreMove = true;
-
-		// Traverse in ascending order to make sure that inner circleMarkers are on top of further legs. Normal markers are re-ordered by newPosition.
-		// The reverse order trick no longer improves performance on modern browsers.
-		for (i = 0; i < childMarkers.length; i++) {
-			newPos = map.layerPointToLatLng(positions[i]);
-			m = childMarkers[i];
-
-			// Add the leg before the marker, so that in case the latter is a circleMarker, the leg is behind it.
-			leg = new L.Polyline([this._latlng, newPos], legOptions);
-			map.addLayer(leg);
-			m._spiderLeg = leg;
-
-			// Now add the marker.
-			m._preSpiderfyLatlng = m._latlng;
-			m.setLatLng(newPos);
-			if (m.setZIndexOffset) {
-				m.setZIndexOffset(1000000); //Make these appear on top of EVERYTHING
-			}
-
-			fg.addLayer(m);
-		}
-		this.setOpacity(0.3);
-
-		group._ignoreMove = false;
-		group.fire('spiderfied', {
-			cluster: this,
-			markers: childMarkers
-		});
-	},
-
-	_animationUnspiderfy: function () {
-		this._noanimationUnspiderfy();
-	}
-});
 
 //Animated versions here
-L.MarkerCluster.include({
+export var spiderfyAnimationsMarkerClusterInclude = {
 
 	_animationSpiderfy: function (childMarkers, positions) {
 		var me = this,
@@ -194,7 +153,7 @@ L.MarkerCluster.include({
 			i, m, leg, legPath, legLength, newPos;
 
 		if (finalLegOpacity === undefined) {
-			finalLegOpacity = L.MarkerClusterGroup.prototype.options.spiderLegPolylineOptions.opacity;
+			finalLegOpacity = MarkerClusterGroup.prototype.options.spiderLegPolylineOptions.opacity;
 		}
 
 		if (svg) {
@@ -381,97 +340,9 @@ L.MarkerCluster.include({
 			});
 		}, 200);
 	}
-});
+};
 
 
-L.MarkerClusterGroup.include({
-	//The MarkerCluster currently spiderfied (if any)
-	_spiderfied: null,
 
-	unspiderfy: function () {
-		this._unspiderfy.apply(this, arguments);
-	},
 
-	_spiderfierOnAdd: function () {
-		this._map.on('click', this._unspiderfyWrapper, this);
 
-		if (this._map.options.zoomAnimation) {
-			this._map.on('zoomstart', this._unspiderfyZoomStart, this);
-		}
-		//Browsers without zoomAnimation or a big zoom don't fire zoomstart
-		this._map.on('zoomend', this._noanimationUnspiderfy, this);
-
-		if (!L.Browser.touch) {
-			this._map.getRenderer(this);
-			//Needs to happen in the pageload, not after, or animations don't work in webkit
-			//  http://stackoverflow.com/questions/8455200/svg-animate-with-dynamically-added-elements
-			//Disable on touch browsers as the animation messes up on a touch zoom and isn't very noticable
-		}
-	},
-
-	_spiderfierOnRemove: function () {
-		this._map.off('click', this._unspiderfyWrapper, this);
-		this._map.off('zoomstart', this._unspiderfyZoomStart, this);
-		this._map.off('zoomanim', this._unspiderfyZoomAnim, this);
-		this._map.off('zoomend', this._noanimationUnspiderfy, this);
-
-		//Ensure that markers are back where they should be
-		// Use no animation to avoid a sticky leaflet-cluster-anim class on mapPane
-		this._noanimationUnspiderfy();
-	},
-
-	//On zoom start we add a zoomanim handler so that we are guaranteed to be last (after markers are animated)
-	//This means we can define the animation they do rather than Markers doing an animation to their actual location
-	_unspiderfyZoomStart: function () {
-		if (!this._map) { //May have been removed from the map by a zoomEnd handler
-			return;
-		}
-
-		this._map.on('zoomanim', this._unspiderfyZoomAnim, this);
-	},
-
-	_unspiderfyZoomAnim: function (zoomDetails) {
-		//Wait until the first zoomanim after the user has finished touch-zooming before running the animation
-		if (L.DomUtil.hasClass(this._map._mapPane, 'leaflet-touching')) {
-			return;
-		}
-
-		this._map.off('zoomanim', this._unspiderfyZoomAnim, this);
-		this._unspiderfy(zoomDetails);
-	},
-
-	_unspiderfyWrapper: function () {
-		/// <summary>_unspiderfy but passes no arguments</summary>
-		this._unspiderfy();
-	},
-
-	_unspiderfy: function (zoomDetails) {
-		if (this._spiderfied) {
-			this._spiderfied.unspiderfy(zoomDetails);
-		}
-	},
-
-	_noanimationUnspiderfy: function () {
-		if (this._spiderfied) {
-			this._spiderfied._noanimationUnspiderfy();
-		}
-	},
-
-	//If the given layer is currently being spiderfied then we unspiderfy it so it isn't on the map anymore etc
-	_unspiderfyLayer: function (layer) {
-		if (layer._spiderLeg) {
-			this._featureGroup.removeLayer(layer);
-
-			if (layer.clusterShow) {
-				layer.clusterShow();
-			}
-				//Position will be fixed up immediately in _animationUnspiderfy
-			if (layer.setZIndexOffset) {
-				layer.setZIndexOffset(0);
-			}
-
-			this._map.removeLayer(layer._spiderLeg);
-			delete layer._spiderLeg;
-		}
-	}
-});

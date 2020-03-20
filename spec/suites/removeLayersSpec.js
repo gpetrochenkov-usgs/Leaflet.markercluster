@@ -1,4 +1,8 @@
-﻿describe('removeLayers', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+
+describe('removeLayers', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -22,7 +26,7 @@
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -39,7 +43,7 @@
 	/////////////////////////////
 	it('removes all the layer given to it', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var markers = [
 			new L.Marker([1.5, 1.5]),
@@ -62,7 +66,7 @@
 
 	it('removes all the layer given to it even though they move', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var markers = [
 			new L.Marker([10, 10]),
@@ -87,7 +91,7 @@
 
 	it('removes all the layer given to it even if the group is not on the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var markers = [
 			new L.Marker([1.5, 1.5]),
@@ -110,7 +114,7 @@
 
 	it('doesnt break if we are spiderfied', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var markers = [
 			new L.Marker([1.5, 1.5]),
@@ -142,7 +146,7 @@
 
 	it('handles nested Layer Groups', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker1 = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -176,7 +180,7 @@
         //See #743 for more details
         var markers = [];
 
-        group = new L.MarkerClusterGroup({
+        group = new MarkerClusterGroup({
             chunkedLoading: true, chunkProgress: function () {
                 //Before this provoked an "undefined" exception
                 map.zoomOut();

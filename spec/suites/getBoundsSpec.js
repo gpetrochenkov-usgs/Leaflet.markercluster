@@ -1,4 +1,8 @@
-﻿describe('getBounds', function() {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+
+describe('getBounds', function() {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -29,7 +33,7 @@
 	/////////////////////////////
 	describe('polygon layer', function() {
 		it('returns the correct bounds before adding to the map', function() {
-			var group = new L.MarkerClusterGroup();
+			var group = new MarkerClusterGroup();
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
 			group.addLayer(polygon);
@@ -38,7 +42,7 @@
 		});
 
 		it('returns the correct bounds after adding to the map after adding polygon', function() {
-			var group = new L.MarkerClusterGroup();
+			var group = new MarkerClusterGroup();
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
 			group.addLayer(polygon);
@@ -48,7 +52,7 @@
 		});
 
 		it('returns the correct bounds after adding to the map before adding polygon', function() {
-			var group = new L.MarkerClusterGroup();
+			var group = new MarkerClusterGroup();
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
 			map.addLayer(group);
@@ -60,7 +64,7 @@
 
 	describe('marker layers', function () {
 		it('returns the correct bounds before adding to the map', function () {
-			var group = new L.MarkerClusterGroup();
+			var group = new MarkerClusterGroup();
 			var marker = new L.Marker([1.5, 1.5]);
 			var marker2 = new L.Marker([1.0, 5.0]);
 			var marker3 = new L.Marker([6.0, 2.0]);
@@ -71,7 +75,7 @@
 		});
 
 		it('returns the correct bounds after adding to the map after adding markers', function () {
-			var group = new L.MarkerClusterGroup();
+			var group = new MarkerClusterGroup();
 			var marker = new L.Marker([1.5, 1.5]);
 			var marker2 = new L.Marker([1.0, 5.0]);
 			var marker3 = new L.Marker([6.0, 2.0]);
@@ -83,7 +87,7 @@
 		});
 
 		it('returns the correct bounds after adding to the map before adding markers', function () {
-			var group = new L.MarkerClusterGroup();
+			var group = new MarkerClusterGroup();
 			var marker = new L.Marker([1.5, 1.5]);
 			var marker2 = new L.Marker([1.0, 5.0]);
 			var marker3 = new L.Marker([6.0, 2.0]);
@@ -97,7 +101,7 @@
 
 	describe('marker and polygon layers', function() {
 		it('returns the correct bounds before adding to the map', function() {
-			var group = new L.MarkerClusterGroup();
+			var group = new MarkerClusterGroup();
 			var marker = new L.Marker([6.0, 3.0]);
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -107,7 +111,7 @@
 		});
 
 		it('returns the correct bounds after adding to the map', function () {
-			var group = new L.MarkerClusterGroup();
+			var group = new MarkerClusterGroup();
 			var marker = new L.Marker([6.0, 3.0]);
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -120,7 +124,7 @@
 
 	describe('blank layer', function () {
 		it('returns a blank bounds', function () {
-			var group = new L.MarkerClusterGroup();
+			var group = new MarkerClusterGroup();
 
 			expect(group.getBounds().isValid()).to.be(false);
 		});

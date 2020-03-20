@@ -1,3 +1,6 @@
+import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
 describe('disableClusteringAtZoom option', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
@@ -38,7 +41,7 @@ describe('disableClusteringAtZoom option', function () {
 
 		var maxZoom = 15;
 
-		group = new L.MarkerClusterGroup({
+		group = new MarkerClusterGroup({
 			disableClusteringAtZoom: maxZoom
 		});
 

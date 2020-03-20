@@ -1,4 +1,7 @@
-﻿describe('spiderfy', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+describe('spiderfy', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -22,7 +25,7 @@
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.removeLayers(group.getLayers());
 			map.removeLayer(group);
 		}
@@ -39,7 +42,7 @@
 	/////////////////////////////
 	it('Spiderfies 2 Markers', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -56,7 +59,7 @@
 
 	it('Spiderfies 2 CircleMarkers', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.CircleMarker([1.5, 1.5]);
 		var marker2 = new L.CircleMarker([1.5, 1.5]);
@@ -75,7 +78,7 @@
 
 	it('Spiderfies 2 Circles', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Circle([1.5, 1.5], 10);
 		var marker2 = new L.Circle([1.5, 1.5], 10);
@@ -92,7 +95,7 @@
 
 	it('Spiderfies at current zoom if all child markers are at the exact same position', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -123,7 +126,7 @@
 
 	it('Spiderfies at current zoom if all child markers are still within a single cluster at map maxZoom', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.50001]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -156,7 +159,7 @@
 
 	it('removes all markers and spider legs when group is removed from map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -173,7 +176,7 @@
 
 	it('adds then removes class "leaflet-cluster-anim" from mapPane on spiderfy', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -193,7 +196,7 @@
 
 	it('adds then removes class "leaflet-cluster-anim" from mapPane on unspiderfy', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -217,7 +220,7 @@
 
 	it('fires unspiderfied event on unspiderfy', function (done) {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -247,7 +250,7 @@
 
 	it('does not leave class "leaflet-cluster-anim" on mapPane when group is removed while spiderfied', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -275,7 +278,7 @@
 			}
 		);
 
-		group = new L.MarkerClusterGroup({spiderfyShapePositions: spiderfyShapePositionsFuntion});
+		group = new MarkerClusterGroup({spiderfyShapePositions: spiderfyShapePositionsFuntion});
 
 		group.addLayer(marker);
 		group.addLayer(marker2)
@@ -290,7 +293,7 @@
 
 		it('unspiderfies correctly', function () {
 
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var marker = new L.Circle([1.5, 1.5], 10);
 			var marker2 = new L.Circle([1.5, 1.5], 10);
@@ -314,7 +317,7 @@
 	describe('spiderfied event listener', function () {
 		it('Spiderfies 2 Markers', function (done) {
 
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 			var marker = new L.Marker([1.5, 1.5]);
 			var marker2 = new L.Marker([1.5, 1.5]);
 
@@ -339,7 +342,7 @@
 
 		it('Spiderfies 2 Circles', function (done) {
 
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 			var marker = new L.Circle([1.5, 1.5], 10);
 			var marker2 = new L.Circle([1.5, 1.5], 10);
 

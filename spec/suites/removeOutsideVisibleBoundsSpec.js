@@ -1,3 +1,6 @@
+import * as L from 'leaflet';
+import {MarkerClusterGroup, markerClusterGroup} from '../../src/MarkerClusterGroup';
+
 describe('Option removeOutsideVisibleBounds', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
@@ -29,13 +32,13 @@ describe('Option removeOutsideVisibleBounds', function () {
 		]));
 
 		// Add all markers once to map then remove them immediately so that their icon is null (instead of undefined).
-		for (i = 0; i < markers.length; i++) {
+		for (var i = 0; i < markers.length; i++) {
 			map.removeLayer(markers[i].addTo(map));
 		}
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			//group.removeLayers(group.getLayers());
 			group.clearLayers();
 			map.removeLayer(group);
@@ -56,12 +59,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 	}
 
 	function setBrowserToMobile() {
-		var fakeBrowser = {};
-		for (k in realBrowser) {
-			fakeBrowser[k] = realBrowser[k];
-		}
-		fakeBrowser.mobile = true;
-		L.Browser = fakeBrowser;
+		L.Browser.mobile = true;
 	}
 
 	/////////////////////////////
@@ -69,7 +67,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 	/////////////////////////////
 	it('removes objects more than 1 screen away from view port by default', function () {
 
-		group = L.markerClusterGroup();
+		group = markerClusterGroup();
 
 		prepareGroup();
 
@@ -82,7 +80,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 	it('removes objects out of view port by default for mobile device', function () {
 		setBrowserToMobile();
 		try {
-			group = L.markerClusterGroup();
+			group = markerClusterGroup();
 
 			prepareGroup();
 
@@ -93,13 +91,13 @@ describe('Option removeOutsideVisibleBounds', function () {
 			expect(marker5._icon).to.be(null);
 		}
 		finally {
-			L.Browser = realBrowser;
+			L.Browser.mobile = false;
 		}
 	});
 
 	it('leaves all objects on map when set to false', function () {
 
-		group = L.markerClusterGroup({
+		group = markerClusterGroup({
 			removeOutsideVisibleBounds: false
 		});
 
@@ -123,7 +121,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 	];
 
 	function moveMarkersAndMapToMaxLat(latLngs, isSouth) {
-		for (i = 0; i < markers.length; i++) {
+		for (var i = 0; i < markers.length; i++) {
 			if (isSouth) {
 				markers[i].setLatLng([-latLngs[i][0], latLngs[i][1]]);
 			} else {
@@ -144,7 +142,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 
 		var mapZoom = map.getZoom();
 
-		for (i = 0; i < markers.length; i++) {
+		for (var i = 0; i < markers.length; i++) {
 			try {
 				expect(markers[i].__parent._zoom).to.be.below(mapZoom);
 			} catch (e) {
@@ -158,7 +156,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 
 		moveMarkersAndMapToMaxLat(latLngsMaxLatDefault);
 
-		group = L.markerClusterGroup();
+		group = markerClusterGroup();
 
 		prepareGroup();
 
@@ -176,7 +174,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 		// Make sure we are really in Southern hemisphere.
 		expect(map.getBounds().getNorth()).to.be.below(-80);
 
-		group = L.markerClusterGroup();
+		group = markerClusterGroup();
 
 		prepareGroup();
 
@@ -204,7 +202,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 		try {
 			moveMarkersAndMapToMaxLat(latLngsMaxLatMobile);
 
-			group = L.markerClusterGroup({
+			group = markerClusterGroup({
 				maxClusterRadius: 10
 			});
 
@@ -217,7 +215,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 			expect(marker5._icon).to.be(null);
 		}
 		finally {
-			L.Browser = realBrowser;
+			L.Browser.mobile = false;
 		}
 	});
 
@@ -229,7 +227,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 			// Make sure we are really in Southern hemisphere.
 			expect(map.getBounds().getNorth()).to.be.below(-80);
 
-			group = L.markerClusterGroup({
+			group = markerClusterGroup({
 				maxClusterRadius: 10
 			});
 
@@ -242,7 +240,7 @@ describe('Option removeOutsideVisibleBounds', function () {
 			expect(marker5._icon).to.be(null);
 		}
 		finally {
-			L.Browser = realBrowser;
+			L.Browser.mobile = false;
 		}
 	});
 });

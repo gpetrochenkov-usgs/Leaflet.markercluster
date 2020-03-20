@@ -1,4 +1,7 @@
-﻿describe('support for CircleMarker elements', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+describe('support for CircleMarker elements', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -22,7 +25,7 @@
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -39,7 +42,7 @@
 	/////////////////////////////
 	it('appears when added to the group before the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.CircleMarker([1.5, 1.5]);
 
@@ -56,7 +59,7 @@
 
 	it('appears when added to the group after the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.CircleMarker([1.5, 1.5]);
 
@@ -71,7 +74,7 @@
 
 	it('appears animated when added to the group after the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup({ animateAddingMarkers: true });
+		group = new MarkerClusterGroup({ animateAddingMarkers: true });
 
 		var marker = new L.CircleMarker([1.5, 1.5]);
 		var marker2 = new L.CircleMarker([1.5, 1.5]);
@@ -91,7 +94,7 @@
 
 	it('creates a cluster when 2 overlapping markers are added before the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.CircleMarker([1.5, 1.5]);
 		var marker2 = new L.CircleMarker([1.5, 1.5]);
@@ -109,7 +112,7 @@
 
 	it('creates a cluster when 2 overlapping markers are added after the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.CircleMarker([1.5, 1.5]);
 		var marker2 = new L.CircleMarker([1.5, 1.5]);
@@ -128,7 +131,7 @@
 
 	it('disappears when removed from the group', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.CircleMarker([1.5, 1.5]);
 

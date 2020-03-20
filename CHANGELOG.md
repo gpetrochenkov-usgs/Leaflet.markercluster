@@ -1,6 +1,11 @@
 Leaflet.markercluster
 =====================
 
+## Unreleased Version (2020-03-20)
+Refactored to remove dependence on window variable L from leaflet.js, allowing plugins
+to work with leaflet-src.esm.js.
+
+
 (all changes without author notice are by [@danzel](https://github.com/danzel))
 
 ## 1.4.1 (2018-09-14)

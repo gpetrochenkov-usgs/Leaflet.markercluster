@@ -1,4 +1,7 @@
-﻿describe('adding non point data works', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+describe('adding non point data works', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -20,7 +23,7 @@
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -37,7 +40,7 @@
 	/////////////////////////////
 	it('Allows adding a polygon before via addLayer', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0,2.0], [1.5, 2.0]]);
 
@@ -54,7 +57,7 @@
 
 	it('Allows adding a polygon before via addLayers([])', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -67,7 +70,7 @@
 
 	it('Removes polygons from map when removed', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -81,7 +84,7 @@
 	describe('hasLayer', function () {
 
 		it('returns false when not added', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -97,7 +100,7 @@
 		});
 
 		it('returns true before adding to map', function() {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -107,7 +110,7 @@
 		});
 
 		it('returns true after adding to map after adding polygon', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -118,7 +121,7 @@
 		});
 
 		it('returns true after adding to map before adding polygon', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -133,7 +136,7 @@
 	describe('removeLayer', function() {
 
 		it('removes before adding to map', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -145,7 +148,7 @@
 		});
 
 		it('removes before adding to map', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -157,7 +160,7 @@
 		});
 
 		it('removes after adding to map after adding polygon', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -170,7 +173,7 @@
 		});
 
 		it('removes after adding to map before adding polygon', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -187,7 +190,7 @@
 	describe('removeLayers', function () {
 
 		it('removes before adding to map', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -199,7 +202,7 @@
 		});
 
 		it('removes before adding to map', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -211,7 +214,7 @@
 		});
 
 		it('removes after adding to map after adding polygon', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 
@@ -224,7 +227,7 @@
 		});
 
 		it('removes after adding to map before adding polygon', function () {
-			group = new L.MarkerClusterGroup();
+			group = new MarkerClusterGroup();
 
 			var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 

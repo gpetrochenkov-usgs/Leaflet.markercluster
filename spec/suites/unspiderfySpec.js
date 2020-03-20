@@ -1,3 +1,6 @@
+import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
 describe('unspiderfy', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
@@ -22,7 +25,7 @@ describe('unspiderfy', function () {
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.removeLayers(group.getLayers());
 			map.removeLayer(group);
 		}
@@ -39,7 +42,7 @@ describe('unspiderfy', function () {
 	/////////////////////////////
 	it('Unspiderfies 2 Markers', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -62,7 +65,7 @@ describe('unspiderfy', function () {
 
 	it('Unspiderfies 2 CircleMarkers', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.CircleMarker([1.5, 1.5]);
 		var marker2 = new L.CircleMarker([1.5, 1.5]);
@@ -85,7 +88,7 @@ describe('unspiderfy', function () {
 
 	it('Unspiderfies 2 Circles', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Circle([1.5, 1.5], 10);
 		var marker2 = new L.Circle([1.5, 1.5], 10);
@@ -108,7 +111,7 @@ describe('unspiderfy', function () {
 
 	it('fires unspiderfied event on unspiderfy', function (done) {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);

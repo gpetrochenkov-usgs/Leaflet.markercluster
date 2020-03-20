@@ -1,3 +1,6 @@
+import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
 describe('Map pane selection', function() {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
@@ -23,7 +26,7 @@ describe('Map pane selection', function() {
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -38,7 +41,7 @@ describe('Map pane selection', function() {
     // TESTS
     /////////////////////////////
     it('recognizes and applies option', function() {
-        group = new L.MarkerClusterGroup({clusterPane: 'testPane'});
+        group = new MarkerClusterGroup({clusterPane: 'testPane'});
 
         var marker = new L.Marker([1.5, 1.5]);
         var marker2 = new L.Marker([1.5, 1.5]);
@@ -50,7 +53,7 @@ describe('Map pane selection', function() {
     });
 
     it('defaults to default marker pane', function() {
-        group = new L.MarkerClusterGroup();
+        group = new MarkerClusterGroup();
 
         var marker = new L.Marker([1.5, 1.5]);
         var marker2 = new L.Marker([1.5, 1.5]);

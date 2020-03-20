@@ -1,4 +1,7 @@
-﻿describe('clearLayer', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+describe('clearLayer', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -28,7 +31,7 @@
 	// TESTS
 	/////////////////////////////
 	it('clears everything before adding to map', function () {
-		var group = new L.MarkerClusterGroup();
+		var group = new MarkerClusterGroup();
 		var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 		var marker = new L.Marker([1.5, 1.5]);
 
@@ -40,7 +43,7 @@
 	});
 
 	it('hits polygons and markers after adding to map', function () {
-		var group = new L.MarkerClusterGroup();
+		var group = new MarkerClusterGroup();
 		var polygon = new L.Polygon([[1.5, 1.5], [2.0, 1.5], [2.0, 2.0], [1.5, 2.0]]);
 		var marker = new L.Marker([1.5, 1.5]);
 

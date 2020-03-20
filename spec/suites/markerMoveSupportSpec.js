@@ -1,3 +1,6 @@
+import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
 describe('moving markers', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
@@ -22,7 +25,7 @@ describe('moving markers', function () {
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -40,7 +43,7 @@ describe('moving markers', function () {
 	/////////////////////////////
 	it('moves a marker that was moved while off the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([10, 10]);
 		map.addLayer(group);
@@ -55,7 +58,7 @@ describe('moving markers', function () {
 
 	it('moves multiple markers that were moved while off the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 		map.addLayer(group);
 
 		var markers = [];

@@ -1,3 +1,7 @@
+import * as L from 'leaflet';
+import {MarkerCluster} from "../../src/MarkerCluster";
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
 describe('getVisibleParent', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
@@ -31,7 +35,7 @@ describe('getVisibleParent', function () {
 	// TESTS
 	/////////////////////////////
 	it('gets the marker if the marker is visible', function () {
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 		var marker = new L.Marker([1.5, 1.5]);
 
 		group.addLayer(marker);
@@ -43,7 +47,7 @@ describe('getVisibleParent', function () {
 	});
 
 	it('gets the visible cluster if it is clustered', function () {
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
 
@@ -52,13 +56,13 @@ describe('getVisibleParent', function () {
 
 		var vp = group.getVisibleParent(marker);
 
-		expect(vp).to.be.a(L.MarkerCluster);
+		expect(vp).to.be.a(MarkerCluster);
 		expect(vp._icon).to.not.be(null);
 		expect(vp._icon).to.not.be(undefined);
 	});
 
 	it('returns null if the marker and parents are all not visible', function () {
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 		var marker = new L.Marker([5.5, 1.5]);
 		var marker2 = new L.Marker([5.5, 1.5]);
 

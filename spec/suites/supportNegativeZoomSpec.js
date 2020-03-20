@@ -1,4 +1,7 @@
-﻿describe('things behave correctly with negative minZoom', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+describe('things behave correctly with negative minZoom', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -16,7 +19,7 @@
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -32,7 +35,7 @@
 	/////////////////////////////
 	it('shows a single marker added to the group before the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 
@@ -45,7 +48,7 @@
 
 	it('shows a single marker added to the group after the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 
@@ -58,7 +61,7 @@
 
 	it('creates a cluster when 2 overlapping markers are added before the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
 
@@ -73,7 +76,7 @@
 	});
 	it('creates a cluster when 2 overlapping markers are added after the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
 

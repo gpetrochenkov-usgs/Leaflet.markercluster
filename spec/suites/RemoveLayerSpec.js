@@ -1,4 +1,7 @@
-﻿describe('removeLayer', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+describe('removeLayer', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -22,7 +25,7 @@
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -39,7 +42,7 @@
 	/////////////////////////////
 	it('removes a layer that was added to it', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 
@@ -56,7 +59,7 @@
 
 	it('doesnt remove a layer not added to it', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 
@@ -73,7 +76,7 @@
 
 	it('removes a layer that was added to it (before being on the map) that is shown in a cluster', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -89,7 +92,7 @@
 
 	it('removes a layer that was added to it (after being on the map) that is shown in a cluster', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -106,7 +109,7 @@
 
 	it('removes a layer that was added to it (before being on the map) that is individually', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1, 1.5]);
 		var marker2 = new L.Marker([3, 1.5]);
@@ -126,7 +129,7 @@
 
 	it('removes a layer (with animation) that was added to it (after being on the map) that is shown in a cluster', function () {
 
-		group = new L.MarkerClusterGroup({ animateAddingMarkers: true });
+		group = new MarkerClusterGroup({ animateAddingMarkers: true });
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -152,7 +155,7 @@
 
 	it('removes the layers that are in the given LayerGroup', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -170,7 +173,7 @@
 
 	it('removes the layers that are in the given LayerGroup when not on the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
@@ -187,7 +190,7 @@
 
 	it('passes control to removeLayers when marker is a Layer Group', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker1 = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);

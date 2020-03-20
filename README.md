@@ -1,3 +1,6 @@
+Refactored by Greg Petrochenkov
+For Use in the WDFN Networks Pages
+
 Leaflet.markercluster
 =====================
 

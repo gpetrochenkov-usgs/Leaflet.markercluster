@@ -4,9 +4,11 @@
  * accordingly (case where their iconCreateFunction uses data of childMarkers
  * to make up the cluster icon).
  */
+import * as L from 'leaflet';
+import {MarkerCluster} from './MarkerCluster.js';
+import {MarkerClusterGroup} from './MarkerClusterGroup.js';
 
-
-L.MarkerClusterGroup.include({
+export var refreshMarkerClusterGroupInclude = {
 	/**
 	 * Updates the icon of all clusters which are parents of the given marker(s).
 	 * In singleMarkerMode, also updates the given marker(s) icon.
@@ -18,11 +20,11 @@ L.MarkerClusterGroup.include({
 	refreshClusters: function (layers) {
 		if (!layers) {
 			layers = this._topClusterLevel.getAllChildMarkers();
-		} else if (layers instanceof L.MarkerClusterGroup) {
+		} else if (layers instanceof MarkerClusterGroup) {
 			layers = layers._topClusterLevel.getAllChildMarkers();
 		} else if (layers instanceof L.LayerGroup) {
 			layers = layers._layers;
-		} else if (layers instanceof L.MarkerCluster) {
+		} else if (layers instanceof MarkerCluster) {
 			layers = layers.getAllChildMarkers();
 		} else if (layers instanceof L.Marker) {
 			layers = [layers];
@@ -80,9 +82,9 @@ L.MarkerClusterGroup.include({
 			}
 		}
 	}
-});
+};
 
-L.Marker.include({
+export var refreshMarkerInclude = {
 	/**
 	 * Updates the given options in the marker's icon and refreshes the marker.
 	 * @param options map object of icon options.
@@ -107,4 +109,4 @@ L.Marker.include({
 
 		return this;
 	}
-});
+};

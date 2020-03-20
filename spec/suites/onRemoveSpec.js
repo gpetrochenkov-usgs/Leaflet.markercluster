@@ -1,4 +1,7 @@
-﻿describe('onRemove', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+describe('onRemove', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -30,7 +33,7 @@
 	/////////////////////////////
 	it('removes the shown coverage polygon', function () {
 
-		var group = new L.MarkerClusterGroup();
+		var group = new MarkerClusterGroup();
 		var marker = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);
 		var marker3 = new L.Marker([1.5, 1.5]);

@@ -1,12 +1,13 @@
+import * as L from 'leaflet';
 
-L.DistanceGrid = function (cellSize) {
+export var DistanceGrid = function (cellSize) {
 	this._cellSize = cellSize;
 	this._sqCellSize = cellSize * cellSize;
 	this._grid = {};
 	this._objectPoint = { };
 };
 
-L.DistanceGrid.prototype = {
+DistanceGrid.prototype = {
 
 	addObject: function (obj, point) {
 		var x = this._getCoord(point.x),

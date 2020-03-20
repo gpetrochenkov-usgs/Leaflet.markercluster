@@ -1,4 +1,7 @@
-﻿describe('refreshClusters', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup, markerClusterGroup} from '../../src/MarkerClusterGroup';
+
+describe('refreshClusters', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -22,7 +25,7 @@
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -58,7 +61,7 @@
 	/////////////////////////////
 	it('flags all non-visible parent clusters of a given marker', function () {
 
-		group = L.markerClusterGroup().addTo(map);
+		group = markerClusterGroup().addTo(map);
 
 		var marker1 = L.marker([1.5, 1.5]).addTo(group),
 		    marker2 = L.marker([1.5, 1.5]).addTo(group); // Needed to force a cluster.
@@ -101,7 +104,7 @@
 
 	it('re-draws visible clusters', function () {
 
-		group = L.markerClusterGroup({
+		group = markerClusterGroup({
 			iconCreateFunction: function (cluster) {
 				var markers = cluster.getAllChildMarkers();
 
@@ -166,7 +169,7 @@
 
 	it('re-draws markers in singleMarkerMode', function () {
 
-		group = L.markerClusterGroup({
+		group = markerClusterGroup({
 			singleMarkerMode: true,
 			iconCreateFunction: iconCreateFunction
 		}).addTo(map);
@@ -190,7 +193,7 @@
 
 	it('does not modify markers that do not belong to the current group (in singleMarkerMode)', function () {
 
-		group = L.markerClusterGroup({
+		group = markerClusterGroup({
 			singleMarkerMode: true,
 			iconCreateFunction: iconCreateFunction
 		}).addTo(map);
@@ -244,7 +247,7 @@
 
 	function init3clusterBranches() {
 
-		group = L.markerClusterGroup({
+		group = markerClusterGroup({
 			maxClusterRadius: 2 // Make sure we keep distinct clusters.
 		}).addTo(map);
 
@@ -411,7 +414,7 @@
 
 	});
 
-	it('accepts an L.MarkerCluster', function () {
+	it('accepts an MarkerCluster', function () {
 
 		init3clusterBranches();
 

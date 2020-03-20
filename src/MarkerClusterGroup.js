@@ -1,8 +1,14 @@
+import * as L from "leaflet";
+import {MarkerCluster, MarkerClusterNonAnimated} from './MarkerCluster.js';
+import {DistanceGrid} from './DistanceGrid.js';
+import {refreshMarkerClusterGroupInclude, refreshMarkerInclude} from './MarkerClusterGroup.Refresh.js';
 /*
  * L.MarkerClusterGroup extends L.FeatureGroup by clustering the markers contained within
  */
 
-export var MarkerClusterGroup = L.MarkerClusterGroup = L.FeatureGroup.extend({
+
+
+export var MarkerClusterGroup =  L.FeatureGroup.extend({
 
 	options: {
 		maxClusterRadius: 80, //A cluster will cover at most this many pixels from its center
@@ -78,7 +84,7 @@ export var MarkerClusterGroup = L.MarkerClusterGroup = L.FeatureGroup.extend({
 		var animate = L.DomUtil.TRANSITION && this.options.animate;
 		L.extend(this, animate ? this._withAnimation : this._noAnimation);
 		// Remember which MarkerCluster class to instantiate (animated or not).
-		this._markerCluster = animate ? L.MarkerCluster : L.MarkerClusterNonAnimated;
+		this._markerCluster = animate ? MarkerCluster : MarkerClusterNonAnimated;
 	},
 
 	addLayer: function (layer) {
@@ -800,7 +806,7 @@ export var MarkerClusterGroup = L.MarkerClusterGroup = L.FeatureGroup.extend({
 
 	//Override L.Evented.fire
 	fire: function (type, data, propagate) {
-		if (data && data.layer instanceof L.MarkerCluster) {
+		if (data && data.layer instanceof MarkerCluster) {
 			//Prevent multiple clustermouseover/off events if the icon is made up of stacked divs (Doesn't work in ie <= 8, no relatedTarget)
 			if (data.originalEvent && this._isOrIsParent(data.layer._icon, data.originalEvent.relatedTarget)) {
 				return;
@@ -958,8 +964,8 @@ export var MarkerClusterGroup = L.MarkerClusterGroup = L.FeatureGroup.extend({
 
 		//Set up DistanceGrids for each zoom
 		for (var zoom = maxZoom; zoom >= minZoom; zoom--) {
-			this._gridClusters[zoom] = new L.DistanceGrid(radiusFn(zoom));
-			this._gridUnclustered[zoom] = new L.DistanceGrid(radiusFn(zoom));
+			this._gridClusters[zoom] = new DistanceGrid(radiusFn(zoom));
+			this._gridUnclustered[zoom] = new DistanceGrid(radiusFn(zoom));
 		}
 
 		// Instantiate the appropriate L.MarkerCluster class (animated or not).
@@ -1037,7 +1043,7 @@ export var MarkerClusterGroup = L.MarkerClusterGroup = L.FeatureGroup.extend({
 	 */
 	_refreshClustersIcons: function () {
 		this._featureGroup.eachLayer(function (c) {
-			if (c instanceof L.MarkerCluster && c._iconNeedsUpdate) {
+			if (c instanceof MarkerCluster && c._iconNeedsUpdate) {
 				c._updateIcon();
 			}
 		});
@@ -1182,11 +1188,11 @@ export var MarkerClusterGroup = L.MarkerClusterGroup = L.FeatureGroup.extend({
 });
 
 // Constant bounds used in case option "removeOutsideVisibleBounds" is set to false.
-L.MarkerClusterGroup.include({
+MarkerClusterGroup.include({
 	_mapBoundsInfinite: new L.LatLngBounds(new L.LatLng(-Infinity, -Infinity), new L.LatLng(Infinity, Infinity))
 });
 
-L.MarkerClusterGroup.include({
+MarkerClusterGroup.include({
 	_noAnimation: {
 		//Non Animated versions of everything
 		_animationStart: function () {
@@ -1262,7 +1268,7 @@ L.MarkerClusterGroup.include({
 			this._topClusterLevel._recursivelyBecomeVisible(bounds, newZoomLevel);
 			//TODO Maybe? Update markers in _recursivelyBecomeVisible
 			fg.eachLayer(function (n) {
-				if (!(n instanceof L.MarkerCluster) && n._icon) {
+				if (!(n instanceof MarkerCluster) && n._icon) {
 					n.clusterShow();
 				}
 			});
@@ -1382,6 +1388,103 @@ L.MarkerClusterGroup.include({
 	}
 });
 
-L.markerClusterGroup = function (options) {
-	return new L.MarkerClusterGroup(options);
+MarkerClusterGroup.include(refreshMarkerClusterGroupInclude);
+L.Marker.include(refreshMarkerInclude);
+
+MarkerClusterGroup.include({
+	//The MarkerCluster currently spiderfied (if any)
+	_spiderfied: null,
+
+	unspiderfy: function () {
+		this._unspiderfy.apply(this, arguments);
+	},
+
+	_spiderfierOnAdd: function () {
+		this._map.on('click', this._unspiderfyWrapper, this);
+
+		if (this._map.options.zoomAnimation) {
+			this._map.on('zoomstart', this._unspiderfyZoomStart, this);
+		}
+		//Browsers without zoomAnimation or a big zoom don't fire zoomstart
+		this._map.on('zoomend', this._noanimationUnspiderfy, this);
+
+		if (!L.Browser.touch) {
+			this._map.getRenderer(this);
+			//Needs to happen in the pageload, not after, or animations don't work in webkit
+			//  http://stackoverflow.com/questions/8455200/svg-animate-with-dynamically-added-elements
+			//Disable on touch browsers as the animation messes up on a touch zoom and isn't very noticable
+		}
+	},
+
+	_spiderfierOnRemove: function () {
+		this._map.off('click', this._unspiderfyWrapper, this);
+		this._map.off('zoomstart', this._unspiderfyZoomStart, this);
+		this._map.off('zoomanim', this._unspiderfyZoomAnim, this);
+		this._map.off('zoomend', this._noanimationUnspiderfy, this);
+
+		//Ensure that markers are back where they should be
+		// Use no animation to avoid a sticky leaflet-cluster-anim class on mapPane
+		this._noanimationUnspiderfy();
+	},
+
+	//On zoom start we add a zoomanim handler so that we are guaranteed to be last (after markers are animated)
+	//This means we can define the animation they do rather than Markers doing an animation to their actual location
+	_unspiderfyZoomStart: function () {
+		if (!this._map) { //May have been removed from the map by a zoomEnd handler
+			return;
+		}
+
+		this._map.on('zoomanim', this._unspiderfyZoomAnim, this);
+	},
+
+	_unspiderfyZoomAnim: function (zoomDetails) {
+		//Wait until the first zoomanim after the user has finished touch-zooming before running the animation
+		if (L.DomUtil.hasClass(this._map._mapPane, 'leaflet-touching')) {
+			return;
+		}
+
+		this._map.off('zoomanim', this._unspiderfyZoomAnim, this);
+		this._unspiderfy(zoomDetails);
+	},
+
+	_unspiderfyWrapper: function () {
+		/// <summary>_unspiderfy but passes no arguments</summary>
+		this._unspiderfy();
+	},
+
+	_unspiderfy: function (zoomDetails) {
+		if (this._spiderfied) {
+			this._spiderfied.unspiderfy(zoomDetails);
+		}
+	},
+
+	_noanimationUnspiderfy: function () {
+		if (this._spiderfied) {
+			this._spiderfied._noanimationUnspiderfy();
+		}
+	},
+
+	//If the given layer is currently being spiderfied then we unspiderfy it so it isn't on the map anymore etc
+	_unspiderfyLayer: function (layer) {
+		if (layer._spiderLeg) {
+			this._featureGroup.removeLayer(layer);
+
+			if (layer.clusterShow) {
+				layer.clusterShow();
+			}
+				//Position will be fixed up immediately in _animationUnspiderfy
+			if (layer.setZIndexOffset) {
+				layer.setZIndexOffset(0);
+			}
+
+			this._map.removeLayer(layer._spiderLeg);
+			delete layer._spiderLeg;
+		}
+	}
+});
+
+
+
+export var markerClusterGroup = function (options) {
+	return new MarkerClusterGroup(options);
 };

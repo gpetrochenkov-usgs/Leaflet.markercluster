@@ -6,7 +6,7 @@
 * 
 */
 
-L.Marker.include({
+export var opacityMarkerInclude = {
 	clusterHide: function () {
 		var backup = this.options.opacity;
 		this.setOpacity(0);
@@ -17,6 +17,6 @@ L.Marker.include({
 	clusterShow: function () {
 		return this.setOpacity(this.options.opacity);
 	}
-});
+};
 
 

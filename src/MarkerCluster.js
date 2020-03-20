@@ -1,4 +1,9 @@
-export var MarkerCluster = L.MarkerCluster = L.Marker.extend({
+import * as L from 'leaflet';
+import {opacityMarkerInclude} from './MarkerOpacity.js';
+import {hullMarkerClusterInclude} from "./MarkerCluster.QuickHull.js";
+import {spiderfyMarkerClusterInclude, spiderfyAnimationsMarkerClusterInclude} from "./MarkerCluster.Spiderfier.js";
+
+export var MarkerCluster = L.Marker.extend({
 	options: L.Icon.prototype.options,
 
 	initialize: function (group, zoom, a, b) {
@@ -109,7 +114,7 @@ export var MarkerCluster = L.MarkerCluster = L.Marker.extend({
 		this._boundsNeedUpdate = true;
 		this._setClusterCenter(new1);
 
-		if (new1 instanceof L.MarkerCluster) {
+		if (new1 instanceof MarkerCluster) {
 			if (!isNotificationFromChild) {
 				this._childClusters.push(new1);
 				new1.__parent = this;
@@ -401,6 +406,57 @@ export var MarkerCluster = L.MarkerCluster = L.Marker.extend({
 	_isSingleParent: function () {
 		//Don't need to check this._markers as the rest won't work if there are any
 		return this._childClusters.length > 0 && this._childClusters[0]._childCount === this._childCount;
+	}
+});
+
+//Includes------------------------------------------------------------------------------------------------------
+L.Marker.include(opacityMarkerInclude);
+MarkerCluster.include(hullMarkerClusterInclude);
+MarkerCluster.include(spiderfyMarkerClusterInclude);
+MarkerCluster.include(spiderfyAnimationsMarkerClusterInclude);
+
+//Non Animated versions of everything
+export var MarkerClusterNonAnimated = MarkerCluster.extend({
+	_animationSpiderfy: function (childMarkers, positions) {
+		var group = this._group,
+			map = group._map,
+			fg = group._featureGroup,
+			legOptions = this._group.options.spiderLegPolylineOptions,
+			i, m, leg, newPos;
+
+		group._ignoreMove = true;
+
+		// Traverse in ascending order to make sure that inner circleMarkers are on top of further legs. Normal markers are re-ordered by newPosition.
+		// The reverse order trick no longer improves performance on modern browsers.
+		for (i = 0; i < childMarkers.length; i++) {
+			newPos = map.layerPointToLatLng(positions[i]);
+			m = childMarkers[i];
+
+			// Add the leg before the marker, so that in case the latter is a circleMarker, the leg is behind it.
+			leg = new L.Polyline([this._latlng, newPos], legOptions);
+			map.addLayer(leg);
+			m._spiderLeg = leg;
+
+			// Now add the marker.
+			m._preSpiderfyLatlng = m._latlng;
+			m.setLatLng(newPos);
+			if (m.setZIndexOffset) {
+				m.setZIndexOffset(1000000); //Make these appear on top of EVERYTHING
+			}
+
+			fg.addLayer(m);
+		}
+		this.setOpacity(0.3);
+
+		group._ignoreMove = false;
+		group.fire('spiderfied', {
+			cluster: this,
+			markers: childMarkers
+		});
+	},
+
+	_animationUnspiderfy: function () {
+		this._noanimationUnspiderfy();
 	}
 });
 

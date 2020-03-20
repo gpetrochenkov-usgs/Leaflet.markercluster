@@ -3,6 +3,9 @@
 
 import rollupGitVersion from 'rollup-plugin-git-version'
 import json from 'rollup-plugin-json'
+import alias from "@rollup/plugin-alias";
+import path from 'path';
+import commonjs from 'rollup-plugin-commonjs';
 
 import gitRev from 'git-rev-sync'
 
@@ -38,6 +41,12 @@ export default {
 		sourcemap: true,
 	},
 	plugins: [
-		release ? json() : rollupGitVersion(),
+		alias({
+            entries: [
+                {find: 'leaflet', replacement: path.resolve(__dirname, '../node_modules/leaflet/dist/leaflet-src.esm.js')}
+            ]
+        }),
+        commonjs(),
+		release ? json() : rollupGitVersion()
 	],
 };

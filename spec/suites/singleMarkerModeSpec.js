@@ -1,3 +1,6 @@
+import * as L from 'leaflet';
+import {MarkerClusterGroup, markerClusterGroup} from '../../src/MarkerClusterGroup';
+
 describe('singleMarkerMode option', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
@@ -25,7 +28,7 @@ describe('singleMarkerMode option', function () {
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.removeLayers(group.getLayers());
 			map.removeLayer(group);
 		}
@@ -41,7 +44,7 @@ describe('singleMarkerMode option', function () {
 	/////////////////////////////
 	it('overrides marker icons when set to true', function () {
 
-		group = L.markerClusterGroup({
+		group = markerClusterGroup({
 			singleMarkerMode: true,
 			iconCreateFunction: function (layer) {
 				return clusterIcon;
@@ -58,7 +61,7 @@ describe('singleMarkerMode option', function () {
 
 	it('does not modify marker icons by default (or set to false)', function () {
 
-		group = L.markerClusterGroup({
+		group = markerClusterGroup({
 			iconCreateFunction: function (layer) {
 				return clusterIcon;
 			}

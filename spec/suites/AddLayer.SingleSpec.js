@@ -1,4 +1,7 @@
-﻿describe('addLayer adding a single marker', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+describe('addLayer adding a single marker', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -20,7 +23,7 @@
 	});
 
 	afterEach(function () {
-		if (group instanceof L.MarkerClusterGroup) {
+		if (group instanceof MarkerClusterGroup) {
 			group.clearLayers();
 			map.removeLayer(group);
 		}
@@ -36,7 +39,7 @@
 	/////////////////////////////
 	it('appears when added to the group before the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 
@@ -49,7 +52,7 @@
 
 	it('appears when added to the group after the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([1.5, 1.5]);
 
@@ -62,7 +65,7 @@
 
 	it('appears (using animations) when added after the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup({ animateAddingMarkers: true });
+		group = new MarkerClusterGroup({ animateAddingMarkers: true });
 
 		var marker = new L.Marker([1.5, 1.5]);
 
@@ -75,7 +78,7 @@
 
 	it('does not appear when too far away when added before the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([3.5, 1.5]);
 
@@ -87,7 +90,7 @@
 
 	it('does not appear when too far away when added after the group is added to the map', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker = new L.Marker([3.5, 1.5]);
 
@@ -99,7 +102,7 @@
 
 	it('passes control to addLayers when marker is a Layer Group', function () {
 
-		group = new L.MarkerClusterGroup();
+		group = new MarkerClusterGroup();
 
 		var marker1 = new L.Marker([1.5, 1.5]);
 		var marker2 = new L.Marker([1.5, 1.5]);

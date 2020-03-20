@@ -1,4 +1,9 @@
-﻿describe('support child markers changing icon', function () {
+﻿import * as L from 'leaflet';
+import {MarkerClusterGroup} from '../../src/MarkerClusterGroup';
+
+
+
+describe('support child markers changing icon', function () {
 	/////////////////////////////
 	// SETUP FOR EACH TEST
 	/////////////////////////////
@@ -33,7 +38,7 @@
 	/////////////////////////////
 	it('child markers end up with the right icon after becoming unclustered', function () {
 
-		var group = new L.MarkerClusterGroup();
+		var group = new MarkerClusterGroup();
 		var marker = new L.Marker([1.5, 1.5], { icon: new L.DivIcon({html: 'Inner1Text' }) });
 		var marker2 = new L.Marker([1.5, 1.5]);
 
