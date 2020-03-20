@@ -1,5 +1,5 @@
 
-export { MarkerClusterGroup } from './MarkerClusterGroup.js';
+export { MarkerClusterGroup, markerClusterGroup} from './MarkerClusterGroup.js';
 export { MarkerCluster, MarkerClusterNonAnimated } from './MarkerCluster.js';
 // import {} from './MarkerOpacity.js';
 // import {} from './DistanceGrid.js';
