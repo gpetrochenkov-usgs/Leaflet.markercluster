@@ -1,5 +1,5 @@
 /*
- * markercluster 1.4.1,
+ * markercluster 1.4.2,
  * Provides Beautiful Animated Marker Clustering functionality for Leaflet, a JS library for interactive maps.
  * https://github.com/gpetrochenkov-usgs/Leaflet.markercluster
  * (c) 2020, Greg Petrochenkov, USGS

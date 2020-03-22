@@ -1,7 +1,7 @@
 {
 	"name": "markercluster-iow",
 	"repository": "https://github.com/gpetrochenkov-usgs/Leaflet.markercluster",
-	"version": "1.4.1",
+	"version": "1.4.2",
 	"description": "Provides Beautiful Animated Marker Clustering functionality for Leaflet",
 	"devDependencies": {
 		"git-rev-sync": "^1.8.0",
